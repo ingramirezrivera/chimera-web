@@ -1,13 +1,14 @@
-/** @type {import('next').NextConfig} */
+import type { NextConfig } from "next";
+
 const isProd = process.env.NODE_ENV === "production";
+const repo = "chimera-web"; // <- exact GitHub repository name
 
-// ⚠️ Replace with your actual repo name (GitHub repository)
-const repo = "chimera-web";
-
-module.exports = {
+const nextConfig: NextConfig = {
   output: "export",
-  images: { unoptimized: true }, // needed if you use next/image
-  trailingSlash: true, // avoids 404s on refresh for subpaths
+  images: { unoptimized: true }, // required if you use next/image with static export
+  trailingSlash: true, // avoids 404 on refresh for subpaths
   basePath: isProd ? `/${repo}` : "",
   assetPrefix: isProd ? `/${repo}/` : "",
 };
+
+export default nextConfig;

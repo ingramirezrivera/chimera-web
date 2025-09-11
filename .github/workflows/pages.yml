@@ -34,7 +34,6 @@ jobs:
         run: |
           npm run build
           npx next export
-          # Ensure GitHub Pages serves _next/ assets
           touch out/.nojekyll
 
       - name: Upload artifact
