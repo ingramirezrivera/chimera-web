@@ -1,3 +1,170 @@
+/* ──────────────────────────────────────────────────────────
+   Tailwind layers
+   ────────────────────────────────────────────────────────── */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ──────────────────────────────────────────────────────────
+   CSS variables (branding) – light/dark
+   ────────────────────────────────────────────────────────── */
+:root {
+  /* Background / text */
+  --bg: 249 250 251; /* #f9fafb (gray-50) */
+  --fg: 17 24 39; /* #111827 (gray-900) */
+
+  /* Brand palette */
+  --brand: 16 185 129; /* #10b981 */
+  --brand-600: 5 150 105; /* #059669 */
+  --accent: 14 165 233; /* #0ea5e9 */
+  --warn: 245 158 11; /* #f59e0b */
+
+  /* Surfaces / borders */
+  --surface: 255 255 255; /* #ffffff */
+  --muted: 243 244 246; /* gray-100 */
+  --border: 229 231 235; /* gray-200 */
+}
+
+.dark {
+  --bg: 17 24 39; /* gray-900 */
+  --fg: 229 231 235; /* gray-200 */
+  --surface: 24 24 27; /* zinc-900 */
+  --muted: 39 39 42; /* zinc-800 */
+  --border: 63 63 70; /* zinc-700 */
+}
+
+/* Respect user preference for dark mode */
+@media (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    color-scheme: dark;
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Base resets and typography
+   ────────────────────────────────────────────────────────── */
+@layer base {
+  html {
+    @apply h-full scroll-smooth;
+  }
+
+  body {
+    @apply min-h-screen antialiased;
+    background-color: rgb(var(--bg));
+    color: rgb(var(--fg));
+  }
+
+  /* Typography */
+  h1,
+  h2,
+  h3 {
+    @apply tracking-tight;
+  }
+  h1 {
+    @apply text-4xl md:text-6xl font-bold;
+  }
+  h2 {
+    @apply text-3xl md:text-4xl font-semibold;
+  }
+  h3 {
+    @apply text-2xl md:text-3xl font-semibold;
+  }
+
+  p {
+    @apply leading-7 text-gray-600 dark:text-gray-300;
+  }
+
+  a {
+    @apply text-emerald-600 hover:text-emerald-700 underline-offset-4 hover:underline;
+  }
+
+  /* Text selection */
+  ::selection {
+    background: rgba(var(--brand), 0.25);
+  }
+
+  /* Accessible focus styles */
+  :focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(var(--brand), 0.45);
+    border-radius: 0.5rem;
+  }
+
+  /* Minimal custom scrollbar (webkit) */
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: rgb(var(--border));
+    border-radius: 9999px;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: rgb(var(--muted));
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Component helpers
+   ────────────────────────────────────────────────────────── */
+@layer components {
+  /* Consistent container for sections */
+  .container {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-medium transition;
+  }
+  .btn-primary {
+    background-color: rgb(var(--brand));
+    color: white;
+  }
+  .btn-primary:hover {
+    background-color: rgb(var(--brand-600));
+  }
+
+  .btn-outline {
+    @apply border;
+    border-color: rgb(var(--brand));
+    color: rgb(var(--brand));
+    background-color: transparent;
+  }
+  .btn-outline:hover {
+    background-color: rgba(var(--brand), 0.06);
+  }
+
+  /* Card */
+  .card {
+    @apply rounded-2xl shadow-md border;
+    background-color: rgb(var(--surface));
+    border-color: rgb(var(--border));
+  }
+
+  /* Form controls (if not using @tailwindcss/forms) */
+  .input {
+    @apply w-full rounded-xl border px-3 py-2 outline-none transition;
+    background-color: rgb(var(--surface));
+    border-color: rgb(var(--border));
+  }
+  .input:focus {
+    box-shadow: 0 0 0 3px rgba(var(--brand), 0.25);
+    border-color: rgb(var(--brand));
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   Extra utilities
+   ────────────────────────────────────────────────────────── */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .border-subtle {
+    border-color: rgb(var(--border));
+  }
+  .transition-base {
+    transition: all 0.2s ease;
+  }
+}
