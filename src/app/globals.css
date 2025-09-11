@@ -13,9 +13,9 @@
   --bg: 249 250 251; /* #f9fafb (gray-50) */
   --fg: 17 24 39; /* #111827 (gray-900) */
 
-  /* Brand palette */
-  --brand: 16 185 129; /* #10b981 */
-  --brand-600: 5 150 105; /* #059669 */
+  /* Brand palette — PRIMARY: #2f8185 */
+  --brand: 47 129 133; /* #2f8185 */
+  --brand-600: 39 107 110; /* #276b6e (hover) */
   --accent: 14 165 233; /* #0ea5e9 */
   --warn: 245 158 11; /* #f59e0b */
 
@@ -74,8 +74,13 @@
     @apply leading-7 text-gray-600 dark:text-gray-300;
   }
 
+  /* Links use brand variables (not Tailwind emerald) */
   a {
-    @apply text-emerald-600 hover:text-emerald-700 underline-offset-4 hover:underline;
+    color: rgb(var(--brand));
+    @apply underline-offset-4 hover:underline;
+  }
+  a:hover {
+    color: rgb(var(--brand-600));
   }
 
   /* Text selection */
@@ -117,6 +122,7 @@
   .btn {
     @apply inline-flex items-center justify-center gap-2 rounded-xl px-5 py-3 font-medium transition;
   }
+
   .btn-primary {
     background-color: rgb(var(--brand));
     color: white;
