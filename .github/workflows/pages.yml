@@ -30,10 +30,12 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build & Export static site
+      - name: Build (static export happens here with output: export)
+        run: npm run build
+
+      - name: Prepare artifact
         run: |
-          npm run build
-          npx next export
+          test -d out || (echo "out/ not found" && exit 1)
           touch out/.nojekyll
 
       - name: Upload artifact
