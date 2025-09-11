@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: true
 
 jobs:
@@ -24,19 +24,18 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
 
-      - name: Build (static export happens here with output: export)
+      # With Next 15 + output: "export", the static site is produced by `next build` into `out/`
+      - name: Build (static export)
         run: npm run build
 
       - name: Prepare artifact
-        run: |
-          test -d out || (echo "out/ not found" && exit 1)
-          touch out/.nojekyll
+        run: touch out/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
@@ -48,6 +47,9 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
+    permissions:
+      pages: write
+      id-token: write
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
