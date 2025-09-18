@@ -32,7 +32,7 @@ export default function Navbar() {
             width={180}
             height={40}
             className="object-contain transition-transform duration-200 ease-in-out hover:scale-110"
-            priority // 👈 avoids layout shift
+            priority
           />
         </Link>
 
@@ -59,7 +59,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Mobile hamburger button */}
+        {/* Mobile hamburger */}
         <button
           className="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-white hover:bg-[var(--brand-600)]"
           onClick={() => setOpen((v) => !v)}

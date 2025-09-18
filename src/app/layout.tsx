@@ -1,14 +1,9 @@
 import "./globals.css";
-import dynamic from "next/dynamic";
-
-const Navbar = dynamic(() => import("@/components/layout/Navbar"), {
-  ssr: false,
-  loading: () => <div className="h-16 bg-[var(--brand)] shadow-lg" />,
-});
+import Navbar from "@/components/layout/Navbar";
 
 export const metadata = {
   title: "Chimeralinsight",
-  description: "Website with lazy-loaded Navbar",
+  description: "Website",
 };
 
 export default function RootLayout({
@@ -18,10 +13,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>
-        <Navbar />
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
