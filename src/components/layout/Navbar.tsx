@@ -29,7 +29,7 @@ export default function Navbar() {
           <Image
             src="/logo.png"
             alt="Chimeralinsight logo"
-            width={180}
+            width={250}
             height={40}
             className="object-contain transition-transform duration-200 ease-in-out hover:scale-110"
             priority
