@@ -13,7 +13,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Navbar /> {/* ✅ Client Component, import normal */}
+        {children}
+      </body>
     </html>
   );
 }
