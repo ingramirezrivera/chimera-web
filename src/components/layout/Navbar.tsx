@@ -29,7 +29,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" aria-current={isActive("/") ? "page" : undefined}>
           <Image
-            src={`${base}/logo.png`}
+            src="/logo.png"
             alt="Chimeralinsight logo"
             width={250}
             height={40}

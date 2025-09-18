@@ -66,3 +66,16 @@ Thumbs.db
 *.tsbuildinfo
 dist/
 coverage/
+
+# dependencies
+/node_modules
+
+# build outputs
+/.next
+/out
+
+# env files
+.env.local
+.env.development
+.env.test
+.env.production
