@@ -5,6 +5,8 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
+const base = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+
 const links = [
   { href: "/about", label: "About" },
   { href: "/books", label: "Books" },
@@ -27,12 +29,10 @@ export default function Navbar() {
         {/* Logo */}
         <Link href="/" aria-current={isActive("/") ? "page" : undefined}>
           <Image
-            src="/logo.png"
+            src={`${base}/logo.png`}
             alt="Chimeralinsight logo"
             width={250}
             height={40}
-            className="object-contain transition-transform duration-200 ease-in-out hover:scale-110"
-            priority
           />
         </Link>
 
@@ -50,7 +50,7 @@ export default function Navbar() {
                   "transition-transform transition-colors duration-200 ease-in-out",
                   isActive(link.href)
                     ? "text-[var(--accent)]"
-                    : "hover:text-[var(--brand-600)] hover:scale-105",
+                    : "hover:text-[var(--brand-600)] hover:scale-110",
                 ].join(" ")}
               >
                 {link.label}

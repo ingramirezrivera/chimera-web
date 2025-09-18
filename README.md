@@ -191,3 +191,46 @@ Copy code
 
 Si quieres, hago un commit de “docs: add GitHub Pages deployment instructions” y lo empujas en tu rama/PR actual.
 ```
+
+# Chimera Web
+
+## GitHub Pages Deploy (con imágenes)
+
+1. Edita `.env.production` con:
+   NEXT_PUBLIC_BASE_PATH=/chimera-web
+
+arduino
+Copy code
+(ajusta el valor si cambias el nombre del repo).
+
+2. Build estático:
+
+````bash
+npm run build
+Esto genera /out.
+
+Publica /out en GitHub Pages (branch gh-pages o carpeta docs/).
+
+En producción, las imágenes se servirán desde:
+
+arduino
+Copy code
+https://<usuario>.github.io/chimera-web/logo.png
+Migración a Hostinger
+Borra .env.production (o deja NEXT_PUBLIC_BASE_PATH= vacío).
+
+El sitio quedará en la raíz /, y las imágenes volverán a src="/logo.png".
+
+yaml
+Copy code
+
+---
+
+### 6. Commit sugerido
+
+```powershell
+git add next.config.ts src/components/layout/Navbar.tsx .gitignore README.md
+git add .env.production   # opcional, si decides versionar este archivo
+git commit -m "chore: fix logo path for GitHub Pages using NEXT_PUBLIC_BASE_PATH"
+git push origin feat/navbar
+````
