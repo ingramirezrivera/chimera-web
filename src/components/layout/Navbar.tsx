@@ -1,121 +1,115 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { createPortal } from "react-dom";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
 
 const links = [
-  { href: "/#books", label: "Books" },
-  { href: "/#features", label: "Features" },
-  { href: "/#about", label: "About" },
-  { href: "/#contact", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/books", label: "Books" },
+  { href: "/mailing-list", label: "Mailing List" },
+  { href: "/presskit", label: "Presskit" },
 ];
 
-function BrandLink({
-  onClick,
-}: {
-  onClick?: React.MouseEventHandler<HTMLAnchorElement>;
-}) {
-  return (
-    <Link href="/" onClick={onClick} className="text-lg font-semibold">
-      <span className="text-neutral-900 dark:text-white">Chimeral</span>
-      <span className="text-emerald-600">insight</span>
-    </Link>
-  );
-}
-
 export default function Navbar() {
+  const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Lock body scroll when mobile menu is open
-  useEffect(() => {
-    if (!mounted) return;
-    document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [open, mounted]);
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname === href || pathname.startsWith(href + "/");
+  };
 
   return (
-    <header className="sticky top-0 z-50 border-b border-gray-200 bg-white dark:bg-neutral-900">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-        <BrandLink />
+    <header className="sticky top-0 z-50 bg-[var(--brand)] shadow-lg">
+      <nav className="container mx-auto h-16 flex items-center justify-center px-10">
+        {/* Logo */}
+        <Link href="/" aria-current={isActive("/") ? "page" : undefined}>
+          <Image
+            src="/logo.png"
+            alt="Chimeralinsight logo"
+            width={180}
+            height={40}
+            className="object-contain transition-transform duration-200 ease-in-out hover:scale-110"
+            priority // 👈 avoids layout shift
+          />
+        </Link>
 
-        {/* Desktop nav */}
-        <nav className="hidden items-center gap-8 md:flex">
-          {links.map((l) => (
-            <Link
-              key={l.href}
-              href={l.href}
-              className="text-sm font-medium underline-offset-4 hover:underline"
-            >
-              {l.label}
-            </Link>
+        {/* Desktop links */}
+        <ul className="hidden md:flex items-center gap-8 pl-10">
+          {links.map((link) => (
+            <li key={link.href}>
+              <Link
+                href={link.href}
+                aria-current={isActive(link.href) ? "page" : undefined}
+                className={[
+                  "inline-block",
+                  "px-3 py-2 text-lg font-medium text-white",
+                  "no-underline hover:no-underline focus:no-underline",
+                  "transition-transform transition-colors duration-200 ease-in-out",
+                  isActive(link.href)
+                    ? "text-[var(--accent)]"
+                    : "hover:text-[var(--brand-600)] hover:scale-105",
+                ].join(" ")}
+              >
+                {link.label}
+              </Link>
+            </li>
           ))}
-        </nav>
+        </ul>
 
-        {/* Mobile hamburger */}
+        {/* Mobile hamburger button */}
         <button
-          onClick={() => setOpen(true)}
-          className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-sm md:hidden dark:border-neutral-700"
-          aria-label="Open menu"
-          title="Open menu"
+          className="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-white hover:bg-[var(--brand-600)]"
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle menu"
         >
-          <span className="sr-only">Open menu</span>
-          <div className="space-y-1">
-            <span className="block h-0.5 w-5 bg-current" />
-            <span className="block h-0.5 w-5 bg-current" />
-            <span className="block h-0.5 w-5 bg-current" />
-          </div>
+          {!open ? (
+            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M4 6h16M4 12h16M4 18h16"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+            </svg>
+          ) : (
+            <svg className="w-8 h-8" viewBox="0 0 24 24" fill="none">
+              <path
+                d="M6 6l12 12M18 6L6 18"
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+            </svg>
+          )}
         </button>
-      </div>
+      </nav>
 
-      {/* Mobile menu in a portal so it fully covers the screen */}
-      {mounted &&
-        open &&
-        createPortal(
-          <div
-            className="fixed inset-0 z-[9999] bg-white md:hidden"
-            role="dialog"
-            aria-modal="true"
-          >
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-              {/* Top bar */}
-              <div className="flex h-16 items-center justify-between border-b border-gray-200">
-                <BrandLink onClick={() => setOpen(false)} />
-                <button
+      {/* Mobile menu */}
+      {open && (
+        <div className="md:hidden border-t border-[var(--brand-600)] bg-[var(--brand)]">
+          <ul className="divide-y divide-[var(--brand-600)]">
+            {links.map((link) => (
+              <li key={link.href} className="text-center">
+                <Link
+                  href={link.href}
                   onClick={() => setOpen(false)}
-                  className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-sm"
-                  aria-label="Close menu"
-                  title="Close menu"
+                  aria-current={isActive(link.href) ? "page" : undefined}
+                  className={[
+                    "block w-full px-6 py-4 text-white text-base font-medium",
+                    "no-underline hover:no-underline focus:no-underline",
+                    isActive(link.href)
+                      ? "text-[var(--accent)]"
+                      : "hover:text-[var(--brand-600)]",
+                  ].join(" ")}
                 >
-                  <span className="sr-only">Close menu</span>
-                  <div className="h-5 w-5">✕</div>
-                </button>
-              </div>
-
-              {/* Centered links */}
-              <nav className="flex flex-col items-center justify-center gap-6 py-10 text-center">
-                {links.map((l) => (
-                  <Link
-                    key={l.href}
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className="w-full text-lg font-semibold"
-                  >
-                    {l.label}
-                  </Link>
-                ))}
-              </nav>
-            </div>
-          </div>,
-          document.body
-        )}
+                  {link.label}
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </header>
   );
 }

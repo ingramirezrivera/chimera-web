@@ -1,9 +1,14 @@
 import "./globals.css";
-import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 
-export const metadata: Metadata = {
-  title: "ChimeralInsight",
-  description: "Next.js + Tailwind baseline",
+const Navbar = dynamic(() => import("@/components/layout/Navbar"), {
+  ssr: false,
+  loading: () => <div className="h-16 bg-[var(--brand)] shadow-lg" />,
+});
+
+export const metadata = {
+  title: "Chimeralinsight",
+  description: "Website with lazy-loaded Navbar",
 };
 
 export default function RootLayout({
@@ -12,8 +17,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="h-full">
-      <body className="min-h-screen bg-gray-50 text-gray-900 dark:bg-neutral-950 dark:text-gray-100">
+    <html lang="en">
+      <body>
+        <Navbar />
         {children}
       </body>
     </html>
